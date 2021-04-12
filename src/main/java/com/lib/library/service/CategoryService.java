@@ -12,9 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 @Service
 public class CategoryService {
@@ -81,6 +84,8 @@ public class CategoryService {
 
 
 
+
+
 //    public String getTest() {
 //        System.out.println("test method");
 //        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
@@ -115,4 +120,31 @@ public class CategoryService {
                .getPrincipal();
        return userDetails.getUser();
     }
+
+
+    public String deleteCategoryById(Long categoryId){
+        System.out.println("service calling deleteCategoryById ==>");
+
+        User user = getUserWithUserDetails();
+
+        if (!isAdmin(user)) {
+            throw new AccessDeniedException("Sorry, you are not authorized to delete a category as you are not admin.");
+        }
+
+        Optional<Category> category = categoryRepository.findById(categoryId);
+
+        if( category.isPresent() ){
+            categoryRepository.deleteById(categoryId);
+            return "Category with Id: " + categoryId + " was successfully deleted.";
+        } else {
+            throw new DataNotFoundException("The category with Id: " + categoryId +
+                                             " does not exist.");
+        }
+
+    }
+
+
+
+
+
 }
