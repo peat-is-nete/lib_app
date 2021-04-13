@@ -1,5 +1,6 @@
 package com.lib.library.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -34,6 +35,11 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private UserRole userRole;
+
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private Checkout checkout;
 
     public User() {
     }
