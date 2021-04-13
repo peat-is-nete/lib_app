@@ -70,7 +70,7 @@ public class CategoryService {
 
     public Category getCategory(Long categoryId) {
         System.out.println("service getCategory ==>");
-        //User user = getUserWithUserDetails();
+        User user = getUserWithUserDetails(); // for authentication
         Optional<Category> category = categoryRepository.findById(categoryId);
         if (!category.isPresent()) {
             throw new DataNotFoundException("category with id " + categoryId + " not found");
@@ -88,7 +88,6 @@ public class CategoryService {
         }
         Optional<Category> category = categoryRepository.findById(categoryId);
         if (!category.isPresent()) {
-
             throw new DataNotFoundException("category with id " + categoryId + " not found");
         } else {
             category.get().setDescription(categoryObject.getDescription());
@@ -107,17 +106,22 @@ public class CategoryService {
 
         Optional<Category> category = categoryRepository.findById(categoryId);
         if (!category.isPresent()) {
-
             throw new DataNotFoundException("category with id " + categoryId + " not found");
         } else {
+            bookObject.setCategory(category.get());
             return bookRepository.save(bookObject);
-
         }
-
-
     }
 
-
+    public List<Book> getCategoryBooks(Long categoryId) {
+        System.out.println("service calling getCategoryBooks ==>");
+        User user = getUserWithUserDetails();// for authentication
+        Optional<Category> category = categoryRepository.findById(categoryId);
+        if (!category.isPresent()) {
+            throw new DataNotFoundException("category with id " + categoryId + " not found");
+        }
+        return  category.get().getBookList();
+    }
 
     private boolean isAdmin(User user) {
         return user.getUserRole().getType() == 1;

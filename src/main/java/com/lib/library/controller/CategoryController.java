@@ -48,12 +48,12 @@ public class CategoryController {
         System.out.println(("calling createBookCategory book"));
         return categoryService.createCategoryBook(categoryId, bookObject);
     }
-//
-//    @GetMapping("/categories/{categoryId}/books")
-//    public List<Book> getCategorybooks(@PathVariable Long categoryId){
-//        System.out.println("Calling getCategory book ==>");
-//        return categoryService.getCategoryBooks(categoryId);
-//    }
+
+    @GetMapping("/categories/{categoryId}/books")
+    public List<Book> getCategoryBooks(@PathVariable Long categoryId){
+        System.out.println("Calling getCategory book ==>");
+        return categoryService.getCategoryBooks(categoryId);
+    }
 
 
 
