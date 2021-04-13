@@ -70,10 +70,12 @@ public class CategoryController {
     }
 
     @PutMapping("/categories/{categoryId}/books/{bookId}")
-    public String updateByCategoryIdAndBookId(@PathVariable Long categoryId,
-                                 @PathVariable Long bookId){
+    public Book updateByCategoryIdAndBookId(@PathVariable Long categoryId,
+                                              @PathVariable Long bookId,
+                                              @RequestBody Book bookObj){
         System.out.println("calling updateByCategoryIdAndBookId ==>");
-        return "calling update method";
+
+        return categoryService.updateByCategoryIdAndBookId(categoryId, bookId, bookObj);
     }
 
 

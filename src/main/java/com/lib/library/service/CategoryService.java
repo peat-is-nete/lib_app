@@ -124,6 +124,7 @@ public class CategoryService {
         return  category.get().getBookList();
     }
 
+    // * * * Auxiliary Methods * * *
     private boolean isAdmin(User user) {
         return user.getUserRole().getType() == 1;
     }
@@ -133,7 +134,7 @@ public class CategoryService {
                .getPrincipal();
        return userDetails.getUser();
     }
-
+    // *****************************
 
     public String deleteCategoryById(Long categoryId){
         System.out.println("service calling deleteCategoryById ==>");
@@ -174,6 +175,38 @@ public class CategoryService {
                     " doesn't exist.");
         }
         return book.get();
+    }
+
+
+    public Book updateByCategoryIdAndBookId(Long categoryId,
+                                            Long bookId,
+                                            Book bookObj) {
+        System.out.println("service calling updateByCategoryIdAndBookId ==>");
+
+        User user = getUserWithUserDetails();
+
+        if (!isAdmin(user)) {
+            throw new AccessDeniedException("Sorry, you are not authorized to update a category as you are not admin.");
+        }
+
+        Optional<Category> category = categoryRepository.findById(categoryId);
+
+        if (category.isEmpty()) {
+            throw new DataNotFoundException("Category with ID: " + categoryId + " does not exist.");
+        }
+
+        Optional<Book> book = bookRepository.findByCategoryId(categoryId).stream()
+                .filter(p -> p.getId().equals(bookId)).findFirst();
+
+        if (book.isEmpty()) {
+            throw new DataNotFoundException("Book with ID: " + bookId + " does not exist.");
+        }
+
+        book.get().setTitle(bookObj.getTitle());
+        book.get().setAuthor(bookObj.getAuthor());
+        book.get().setPublisher(bookObj.getPublisher());
+        return bookRepository.save(book.get());
+
     }
 
 
