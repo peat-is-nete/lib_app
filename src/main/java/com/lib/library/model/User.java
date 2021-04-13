@@ -113,6 +113,14 @@ public class User {
         this.roleType = roleType;
     }
 
+    public Checkout getCheckout() {
+        return checkout;
+    }
+
+    public void setCheckout(Checkout checkout) {
+        this.checkout = checkout;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -124,4 +132,6 @@ public class User {
                 ", roleType='" + roleType + '\'' +
                 '}';
     }
+
+
 }
