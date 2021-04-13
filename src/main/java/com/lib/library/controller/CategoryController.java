@@ -69,6 +69,14 @@ public class CategoryController {
 
     }
 
+    @PutMapping("/categories/{categoryId}/books/{bookId}")
+    public String updateByCategoryIdAndBookId(@PathVariable Long categoryId,
+                                 @PathVariable Long bookId){
+        System.out.println("calling updateByCategoryIdAndBookId ==>");
+        return "calling update method";
+    }
+
+
 
 
 
