@@ -23,6 +23,11 @@ public class Book {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "checkout_id")
+    private Checkout checkout;
+
 
     public Book() {
     }
