@@ -10,13 +10,17 @@ import com.lib.library.repository.CategoryRepository;
 import com.lib.library.repository.UserRepository;
 import com.lib.library.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -206,6 +210,33 @@ public class CategoryService {
         book.get().setAuthor(bookObj.getAuthor());
         book.get().setPublisher(bookObj.getPublisher());
         return bookRepository.save(book.get());
+
+    }
+
+
+    public void deleteByCategoryIdAndBookId(Long categoryId, Long bookId) {
+        System.out.println("service calling deleteByCategoryIdAndBookId ==>");
+
+        User user = getUserWithUserDetails();
+
+        if (!isAdmin(user)) {
+            throw new AccessDeniedException("Sorry, you are not authorized to delete a category as you are not admin.");
+        }
+
+        Optional<Category> category = categoryRepository.findById(categoryId);
+
+        if (category.isEmpty()) {
+            throw new DataNotFoundException("Category with ID: " + categoryId + " does not exist.");
+        }
+
+        Optional<Book> book = bookRepository.findByCategoryId(categoryId).stream()
+                .filter(p -> p.getId().equals(bookId)).findFirst();
+
+        if (book.isEmpty()) {
+            throw new DataNotFoundException("Book with ID: " + bookId + " does not exist.");
+        }
+
+        bookRepository.deleteById(book.get().getId());
 
     }
 
