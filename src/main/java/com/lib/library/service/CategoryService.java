@@ -2,6 +2,7 @@ package com.lib.library.service;
 
 import com.lib.library.exception.DataExistException;
 import com.lib.library.exception.DataNotFoundException;
+import com.lib.library.model.Book;
 import com.lib.library.model.Category;
 import com.lib.library.model.User;
 import com.lib.library.repository.BookRepository;
@@ -13,6 +14,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -37,19 +39,17 @@ public class CategoryService {
     }
 
     @Autowired
-    public void setBookRepository( BookRepository bookRepository) {
+    public void setBookRepository(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
     public List<Category> getCategories() {
         System.out.println("Getting categories list ");
-
-        User user = getUserWithUserDetails();
+        getUserWithUserDetails(); // for authentication
         List<Category> categories = categoryRepository.findAll();
-        if (categories.isEmpty()){
+        if (categories.isEmpty()) {
             throw new DataNotFoundException("No categories found.");
         }
-
         return categories;
     }
 
@@ -58,58 +58,71 @@ public class CategoryService {
         User user = getUserWithUserDetails();
 
         if (!isAdmin(user)) {
-           throw new AccessDeniedException("Sorry, you are not authorized to create a category as you are not admin.");
+            throw new AccessDeniedException("Sorry, you are not authorized to create a category as you are not admin.");
         }
 
         Category category = categoryRepository.findByName(categoryObject.getName());
-        if (category != null){
+        if (category != null) {
             throw new DataExistException(" Category with name" + category.getName() + "already exist");
         } else {
             return categoryRepository.save(categoryObject);
         }
-
-
-
-
-
-
     }
 
+    public Category getCategory(Long categoryId) {
+        System.out.println("service getCategory ==>");
+        User user = getUserWithUserDetails(); // for authentication
+        Optional<Category> category = categoryRepository.findById(categoryId);
+        if (!category.isPresent()) {
+            throw new DataNotFoundException("category with id " + categoryId + " not found");
+        } else {
+            return category.get();
+        }
+    }
 
+    public Category updateCategory(Long categoryId, @RequestBody Category categoryObject) {
+        System.out.println("Service calling updateCategory ==>");
+        User user = getUserWithUserDetails();
 
+        if (!isAdmin(user)) {
+            throw new AccessDeniedException("Sorry, you are not authorized to create a category as you are not admin.");
+        }
+        Optional<Category> category = categoryRepository.findById(categoryId);
+        if (!category.isPresent()) {
+            throw new DataNotFoundException("category with id " + categoryId + " not found");
+        } else {
+            category.get().setDescription(categoryObject.getDescription());
+            category.get().setName(categoryObject.getName());
+            return categoryRepository.save(category.get());
+        }
+    }
 
+    public Book createCategoryBook(Long categoryId, Book bookObject) {
+        System.out.println("calling createCategory book ");
+        User user  = getUserWithUserDetails();
 
+        if (!isAdmin(user)) {
+            throw new AccessDeniedException("Sorry, you are not authorized to create a category as you are not admin.");
+        }
 
+        Optional<Category> category = categoryRepository.findById(categoryId);
+        if (!category.isPresent()) {
+            throw new DataNotFoundException("category with id " + categoryId + " not found");
+        } else {
+            bookObject.setCategory(category.get());
+            return bookRepository.save(bookObject);
+        }
+    }
 
-
-
-
-
-
-//    public String getTest() {
-//        System.out.println("test method");
-//        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
-//                .getPrincipal();
-//        // User user = userRepository.findByEmailAddress(userDetails.getUsername());
-//        User user = userDetails.getUser();
-//        if (isAdmin(user)) {
-//            System.out.println("is authorized");
-//        }
-//
-//        System.out.println("Hello World!");
-//        return "Hello world";
-//    }
-//
-//    public String putTest() {
-//        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
-//                .getPrincipal();
-//        User user = userDetails.getUser();
-//        if (isAdmin(user)) {
-//            return "Greetings";
-//        }
-//
-//        throw new AccessDeniedException("Sorry you are not admin");
-//    }
+    public List<Book> getCategoryBooks(Long categoryId) {
+        System.out.println("service calling getCategoryBooks ==>");
+        User user = getUserWithUserDetails();// for authentication
+        Optional<Category> category = categoryRepository.findById(categoryId);
+        if (!category.isPresent()) {
+            throw new DataNotFoundException("category with id " + categoryId + " not found");
+        }
+        return  category.get().getBookList();
+    }
 
     private boolean isAdmin(User user) {
         return user.getUserRole().getType() == 1;
