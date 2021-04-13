@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping(path="/api")
 public class CategoryController {
     CategoryService categoryService;
 
@@ -20,10 +20,9 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public List<Category> getCategories() {
-        System.out.println("calling getCategories");
+        System.out.println("calling getCategories ==>");
         return categoryService.getCategories();
     }
-
 
     @PostMapping("/categories")
     public Category createCategory(@RequestBody Category categoryObject) {
@@ -31,15 +30,11 @@ public class CategoryController {
         return categoryService.createCategory(categoryObject);
     }
     // DELETE CATEGORIES BY ID
-    @DeleteMapping("/categories/{id}")
-    public String deleteCategoryById(@PathVariable Long id){
+    @DeleteMapping("/categories/{categoryId}")
+    public String deleteCategoryById(@PathVariable Long categoryId){
         System.out.println("calling deleteCategoryById ==>");
-        return categoryService.deleteCategoryById(id);
+        return categoryService.deleteCategoryById(categoryId);
     }
-
-
-
-
 
     @GetMapping(path = "/categories/{categoryId}")
     public Category getCategory(@PathVariable Long categoryId) {
@@ -55,16 +50,24 @@ public class CategoryController {
 
     @PostMapping("/categories/{categoryId}/books")
     public Book createCategoryBook(@PathVariable Long categoryId, @RequestBody Book bookObject){
-        System.out.println(("calling createBookCategory book"));
+        System.out.println("calling createCategoryBook ==>");
         return categoryService.createCategoryBook(categoryId, bookObject);
     }
 
     @GetMapping("/categories/{categoryId}/books")
     public List<Book> getCategoryBooks(@PathVariable Long categoryId){
-        System.out.println("Calling getCategory book ==>");
+        System.out.println("calling getCategoryBooks ==>");
         return categoryService.getCategoryBooks(categoryId);
     }
 
+    @GetMapping("/categories/{categoryId}/books/{bookId}")
+    public Book getCategoryBook(@PathVariable Long categoryId,
+                                @PathVariable Long bookId) {
+        System.out.println("calling getCategoryBook ==>");
+        return categoryService.getCategoryBook(categoryId, bookId);
+
+
+    }
 
 
 

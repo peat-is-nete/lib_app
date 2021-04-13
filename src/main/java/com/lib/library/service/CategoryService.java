@@ -150,14 +150,39 @@ public class CategoryService {
             categoryRepository.deleteById(categoryId);
             return "Category with Id: " + categoryId + " was successfully deleted.";
         } else {
-            throw new DataNotFoundException("The category with Id: " + categoryId +
-                                             " does not exist.");
+            throw new DataNotFoundException("The category with ID: " + categoryId +
+                                            " does not exist.");
         }
 
+    }
+
+    public Book getCategoryBook(Long categoryId, Long bookId) {
+        System.out.println("service calling getCategoryBook ==>");
+
+        User user = getUserWithUserDetails();
+
+        Optional<Category> category = categoryRepository.findById(categoryId);
+
+        if (category.isEmpty()) {
+            throw new DataNotFoundException("The category with ID: " + categoryId +
+                    " does not exist.");
+        }
+
+        Optional<Book> book = bookRepository.findByCategoryId(categoryId).stream().filter(p -> p.getId().equals(bookId)).findFirst();
+        if (book.isEmpty()) {
+            throw new DataNotFoundException("The book with ID: " + bookId +
+                    " doesn't exist.");
+        }
+        return book.get();
     }
 
 
 
 
 
-}
+
+
+
+
+
+} // END OF CLASS
