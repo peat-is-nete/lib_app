@@ -30,6 +30,16 @@ public class CategoryController {
         System.out.println("calling createCategory ==>");
         return categoryService.createCategory(categoryObject);
     }
+    // DELETE CATEGORIES BY ID
+    @DeleteMapping("/categories/{id}")
+    public String deleteCategoryById(@PathVariable Long id){
+        System.out.println("calling deleteCategoryById ==>");
+        return categoryService.deleteCategoryById(id);
+    }
+
+
+
+
 
     @GetMapping(path = "/categories/{categoryId}")
     public Category getCategory(@PathVariable Long categoryId) {
