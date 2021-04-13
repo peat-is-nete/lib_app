@@ -1,5 +1,9 @@
 package com.lib.library.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -14,6 +18,15 @@ public class Checkout {
     private Date checkoutDate;
     @Column
     private Long dueDate;
+
+    @ManyToOne()
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private User user;
+
+    @OneToOne
+    @JoinColumn(name = "book_id")
+    @JsonIgnore
+    private Book book;
 
     public Checkout() {
     }
@@ -46,6 +59,22 @@ public class Checkout {
 
     public void setDueDate(Long dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     @Override
