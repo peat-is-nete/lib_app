@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 public class User {
-    private final int CHECKOUT_LIMIT = 5;
+
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,10 +51,6 @@ public class User {
         this.password = password;
         this.emailAddress = emailAddress;
         this.roleType = roleType;
-    }
-
-    public int getCHECKOUT_LIMIT() {
-        return CHECKOUT_LIMIT;
     }
 
     public Long getId() {
@@ -113,6 +109,15 @@ public class User {
         this.roleType = roleType;
     }
 
+    public Checkout getCheckout() {
+        return checkout;
+    }
+
+    public void setCheckout(Checkout checkout) {
+        this.checkout = checkout;
+    }
+
+
     @Override
     public String toString() {
         return "User{" +
@@ -124,4 +129,6 @@ public class User {
                 ", roleType='" + roleType + '\'' +
                 '}';
     }
+
+
 }
