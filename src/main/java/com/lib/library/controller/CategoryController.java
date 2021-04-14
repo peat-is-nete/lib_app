@@ -4,8 +4,11 @@ import com.lib.library.model.Book;
 import com.lib.library.model.Category;
 import com.lib.library.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -37,10 +40,6 @@ public class CategoryController {
         return categoryService.deleteCategoryById(id);
     }
 
-
-
-
-
     @GetMapping(path = "/categories/{categoryId}")
     public Category getCategory(@PathVariable Long categoryId) {
         System.out.println("calling getCategory ==>");
@@ -65,20 +64,22 @@ public class CategoryController {
         return categoryService.getCategoryBooks(categoryId);
     }
 
+    @PutMapping("/categories/{categoryId}/books/{bookId}")
+    public Book updateByCategoryIdAndBookId(@PathVariable Long categoryId,
+                                            @PathVariable Long bookId,
+                                            @RequestBody Book bookObj){
+        System.out.println("calling updateByCategoryIdAndBookId ==>");
+        return categoryService.updateByCategoryIdAndBookId(categoryId, bookId, bookObj);
+    }
 
-
-
-
-
-
-
-//    @GetMapping("/test")
-//    public String getTest() {
-//        return categoryService.getTest();
-//    }
-//
-//    @PutMapping("/test")
-//    public String putTest() {
-//        return categoryService.putTest();
-//    }
+    @DeleteMapping("/categories/{categoryId}/books/{bookId}")
+    public ResponseEntity<HashMap> deleteByCategoryIdAndBookId(
+            @PathVariable(value = "categoryId") Long categoryId,
+            @PathVariable(value = "bookId") Long bookId) {
+        System.out.println("calling deleteByCategoryIdAndBookId ==>");
+        categoryService.deleteByCategoryIdAndBookId(categoryId, bookId);
+        HashMap responseMessage = new HashMap();
+        responseMessage.put("status", "book with ID : " + bookId + " was successfully deleted.");
+        return new ResponseEntity<HashMap>(responseMessage, HttpStatus.OK);
+    }
 }
