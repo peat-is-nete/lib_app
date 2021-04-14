@@ -39,11 +39,13 @@ public class CheckoutController {
                                                   @PathVariable(value = "bookId") Long bookId) {
 
         System.out.println("Calling deleteCheckout");
-        //checkoutService.deleteCheckout(userId,bookId);
+        checkoutService.deleteCheckout(userId,bookId);
         HashMap responseMessage = new HashMap();
         responseMessage.put("status", "Checkout with userID : " + userId + " and bookID : " +
                                        bookId + " was successfully deleted.");
         return new ResponseEntity<HashMap>(responseMessage, HttpStatus.OK);
 
     }
+
+
 }
