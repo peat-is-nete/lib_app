@@ -26,6 +26,7 @@ public class CheckoutService {
     private CheckoutRepository checkoutRepository;
     private UserService userService;
     private final int CHECKOUT_LIMIT = 5;
+    private final int RENEWAL_DAYS = 21;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository){
@@ -84,7 +85,7 @@ public class CheckoutService {
         }
 
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, 21);
+        c.add(Calendar.DATE, RENEWAL_DAYS);
         Date dueDate = c.getTime();
 
         checkoutObject.setCheckoutDate(new Date());
@@ -92,5 +93,26 @@ public class CheckoutService {
         checkoutObject.setBook(book.get());
         checkoutObject.setUser(borrowingUser.get());
         return checkoutRepository.save(checkoutObject);
+    }
+
+    public Checkout updateCheckout(Long checkoutId) {
+        System.out.println("Calling updateCheckout");
+        User user = userService.getUserWithUserDetails();
+        if(!userService.isAdmin(user)) {
+            throw new AccessDeniedException("Sorry, you are not authorized to update a checkout as you are not admin.");
+        }
+
+        Optional<Checkout> checkout = checkoutRepository.findById(checkoutId);
+
+        if (checkout.isEmpty()) {
+            throw new DataNotFoundException("Checkout with checkoutId " + checkoutId + " does not exist.");
+        }
+
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, RENEWAL_DAYS);
+        Date dueDate = c.getTime();
+        checkout.get().setDueDate(dueDate);
+
+        return checkoutRepository.save(checkout.get());
     }
 }

@@ -31,9 +31,8 @@ public class CheckoutController {
     }
 
     @PutMapping(path = "/{checkoutId}/{userId}/{bookId}")
-    public Checkout updateCheckout(@PathVariable Long checkoutId,
-                                   @RequestBody Checkout checkoutObject) {
+    public Checkout updateCheckout(@PathVariable Long checkoutId                                   ) {
         System.out.println("Calling updateCheckout");
-        return checkoutService.updateCheckout(checkoutId, checkoutObject);
+        return checkoutService.updateCheckout(checkoutId);
     }
 }
