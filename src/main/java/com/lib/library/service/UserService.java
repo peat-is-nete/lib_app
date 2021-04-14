@@ -9,10 +9,12 @@ import com.lib.library.model.response.LoginResponse;
 import com.lib.library.repository.UserRepository;
 import com.lib.library.repository.UserRoleRepository;
 import com.lib.library.security.JwtUtils;
+import com.lib.library.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +47,17 @@ public class UserService {
     public void setUserRoleRepository(UserRoleRepository userRoleRepository) {
         this.userRoleRepository = userRoleRepository;
     }
+    // * * * Auxiliary Methods * * *
+    public boolean isAdmin(User user) {
+        return user.getUserRole().getType() == 1;
+    }
+
+    public User getUserWithUserDetails() {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        return userDetails.getUser();
+    }
+    // *****************************
 
     public User createUser(User userObject){
         System.out.println("Calling createUser");
