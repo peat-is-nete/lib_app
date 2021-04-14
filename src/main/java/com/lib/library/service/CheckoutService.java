@@ -93,4 +93,6 @@ public class CheckoutService {
         checkoutObject.setUser(borrowingUser.get());
         return checkoutRepository.save(checkoutObject);
     }
+
+    // public void deleteCheckout(Long userId, Long bookId) { }
 }
