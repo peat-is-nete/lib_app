@@ -68,8 +68,6 @@ public class CategoryController {
                                 @PathVariable Long bookId) {
         System.out.println("calling getCategoryBook ==>");
         return categoryService.getCategoryBook(categoryId, bookId);
-
-
     }
 
     @PutMapping("/categories/{categoryId}/books/{bookId}")
@@ -91,19 +89,4 @@ public class CategoryController {
         responseMessage.put("status", "book with ID : " + bookId + " was successfully deleted.");
         return new ResponseEntity<HashMap>(responseMessage, HttpStatus.OK);
     }
-
-
-
-
-
-
-//    @GetMapping("/test")
-//    public String getTest() {
-//        return categoryService.getTest();
-//    }
-//
-//    @PutMapping("/test")
-//    public String putTest() {
-//        return categoryService.putTest();
-//    }
 }
