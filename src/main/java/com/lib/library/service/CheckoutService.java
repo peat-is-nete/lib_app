@@ -1,6 +1,5 @@
 package com.lib.library.service;
 
-
 import com.lib.library.exception.CheckoutLimitReachException;
 import com.lib.library.exception.DataExistException;
 import com.lib.library.exception.DataNotFoundException;
@@ -21,18 +20,15 @@ import java.util.Optional;
 
 @Service
 public class CheckoutService {
+
+    UserRepository userRepository;
+    BookRepository bookRepository;
     private CheckoutRepository checkoutRepository;
-    private BookRepository bookRepository;
-    private UserRepository userRepository;
+    private UserService userService;
     private final int CHECKOUT_LIMIT = 5;
 
     @Autowired
-    public void setCheckoutRepository(CheckoutRepository checkoutRepository) {
-        this.checkoutRepository = checkoutRepository;
-    }
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public void setUserRepository(UserRepository userRepository){
         this.userRepository = userRepository;
     }
 
@@ -41,7 +37,15 @@ public class CheckoutService {
         this.bookRepository = bookRepository;
     }
 
-    private UserService userService = new UserService();
+    @Autowired
+    public void setCheckoutRepository(CheckoutRepository checkoutRepository) {
+        this.checkoutRepository = checkoutRepository;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     public List<Checkout> getCheckoutListByUser(Long userId)  {
         System.out.println("Service calling getBookList");
@@ -74,8 +78,8 @@ public class CheckoutService {
         }
 
         // get user that is checking out book by userId
-        Optional <User> borrowingUser = userRepository.findById(userId);
-        if(borrowingUser.isPresent()) {
+        Optional<User> borrowingUser = userRepository.findById(userId);
+        if(borrowingUser.isEmpty()) {
             throw new DataNotFoundException("User with userId " + userId + "not found");
         }
 
@@ -89,6 +93,4 @@ public class CheckoutService {
         checkoutObject.setUser(borrowingUser.get());
         return checkoutRepository.save(checkoutObject);
     }
-
-
 }

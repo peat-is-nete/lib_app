@@ -79,6 +79,14 @@ public class Book {
         this.category = category;
     }
 
+    public Checkout getCheckout() {
+        return checkout;
+    }
+
+    public void setCheckout(Checkout checkout) {
+        this.checkout = checkout;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -88,4 +96,5 @@ public class Book {
                 ", publisher='" + publisher + '\'' +
                 '}';
     }
+
 }

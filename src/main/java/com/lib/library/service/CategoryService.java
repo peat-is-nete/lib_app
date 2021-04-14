@@ -9,10 +9,18 @@ import com.lib.library.repository.BookRepository;
 import com.lib.library.repository.CategoryRepository;
 import com.lib.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -136,8 +144,8 @@ public class CategoryService {
             categoryRepository.deleteById(categoryId);
             return "Category with Id: " + categoryId + " was successfully deleted.";
         } else {
-            throw new DataNotFoundException("The category with Id: " + categoryId +
-                                             " does not exist.");
+            throw new DataNotFoundException("The category with ID: " + categoryId +
+                                            " does not exist.");
         }
 
     }
@@ -193,7 +201,6 @@ public class CategoryService {
 
     }
 
-
     public void deleteByCategoryIdAndBookId(Long categoryId, Long bookId) {
         System.out.println("service calling deleteByCategoryIdAndBookId ==>");
 
@@ -218,4 +225,4 @@ public class CategoryService {
 
         bookRepository.deleteById(book.get().getId());
     }
-}
+} // END OF CLASS

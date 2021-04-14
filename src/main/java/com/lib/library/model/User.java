@@ -116,8 +116,7 @@ public class User {
     public void setCheckout(Checkout checkout) {
         this.checkout = checkout;
     }
-
-
+    
     @Override
     public String toString() {
         return "User{" +
