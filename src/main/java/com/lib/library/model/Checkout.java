@@ -1,11 +1,9 @@
 package com.lib.library.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import javax.persistence.*;
 import java.util.Date;
+
 
 @Entity
 @Table(name = "checkouts")
@@ -17,12 +15,15 @@ public class Checkout {
     @Column
     private Date checkoutDate;
     @Column
-    private Long dueDate;
+    private Date dueDate;
 
-    @ManyToOne()
-    @LazyCollection(LazyCollectionOption.FALSE)
+    // book ids belong to one user
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
+    // one book has one checkout
     @OneToOne
     @JoinColumn(name = "book_id")
     @JsonIgnore
@@ -31,10 +32,8 @@ public class Checkout {
     public Checkout() {
     }
 
-    public Checkout(Long id, Long dueDate) {
+    public Checkout(Long id) {
         this.id = id;
-        this.checkoutDate = new Date();
-        this.dueDate = dueDate;
     }
 
     public Long getId() {
@@ -53,11 +52,11 @@ public class Checkout {
         this.checkoutDate = checkoutDate;
     }
 
-    public Long getDueDate() {
+    public Date getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Long dueDate) {
+    public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -83,6 +82,8 @@ public class Checkout {
                 "id=" + id +
                 ", checkoutDate=" + checkoutDate +
                 ", dueDate=" + dueDate +
+                ", user=" + user +
+                ", book=" + book +
                 '}';
     }
 }
