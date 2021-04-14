@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @ResponseStatus(HttpStatus.CONFLICT)
-public class CheckedBookRemovalException extends RuntimeException{
+public class DeleteNotEmptyCategoryException extends RuntimeException {
 
-    public CheckedBookRemovalException(String message) {
+    public DeleteNotEmptyCategoryException(String message) {
         super (message);
     }
 
