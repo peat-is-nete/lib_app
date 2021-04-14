@@ -115,4 +115,31 @@ public class CheckoutService {
 
         return checkoutRepository.save(checkout.get());
     }
-}
+
+    public void deleteCheckout(Long userId, Long bookId) {
+        System.out.println("Service calling deleteCheckout ==>");
+
+        // Getting user access rights from JWT
+        User user = userService.getUserWithUserDetails();
+
+        // If login is not by an admin
+        if (!userService.isAdmin(user)) {
+            throw new AccessDeniedException("Sorry, you are not authorized to delete a checkout as you are not admin.");
+        }
+
+        // Searching whole user database for userId
+        Optional<User> borrowingUser = userRepository.findById(userId);
+        if(borrowingUser.isEmpty()) {
+            throw new DataNotFoundException("There is no such user in database with userId : " + userId + " .");
+        }
+
+        // Finding entry in Checkout table matching userId and bookId
+        Checkout checkout = checkoutRepository.getCheckoutByUserIdAndBookId(userId, bookId);
+        if (checkout == null) {
+            throw new DataExistException("Checkout entry matching the userId: " + userId +
+                                         " and bookId: " + bookId + " does not exist.");
+        }
+
+        checkoutRepository.deleteById(checkout.getId());
+    }
+} // END OF CLASS

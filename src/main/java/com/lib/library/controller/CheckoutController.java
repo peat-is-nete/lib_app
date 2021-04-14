@@ -3,8 +3,11 @@ package com.lib.library.controller;
 import com.lib.library.model.Checkout;
 import com.lib.library.service.CheckoutService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -35,4 +38,19 @@ public class CheckoutController {
         System.out.println("Calling updateCheckout");
         return checkoutService.updateCheckout(checkoutId);
     }
+
+    @DeleteMapping(path = "/{userId}/{bookId}")
+    public ResponseEntity<HashMap> deleteCheckout(@PathVariable(value = "userId") Long userId,
+                                                  @PathVariable(value = "bookId") Long bookId) {
+
+        System.out.println("Calling deleteCheckout");
+        checkoutService.deleteCheckout(userId,bookId);
+        HashMap responseMessage = new HashMap();
+        responseMessage.put("status", "Checkout with userID : " + userId + " and bookID : " +
+                                       bookId + " was successfully deleted.");
+        return new ResponseEntity<HashMap>(responseMessage, HttpStatus.OK);
+
+    }
+
+
 }
