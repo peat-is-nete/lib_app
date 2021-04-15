@@ -102,7 +102,7 @@ public class CheckoutService {
             throw new AccessDeniedException("Sorry, you are not authorized to update a checkout as you are not admin.");
         }
 
-        Optional<Checkout> checkout = checkoutRepository.findById(checkoutId);
+        Optional<Checkout> checkout  = checkoutRepository.findById(checkoutId);
 
         if (checkout.isEmpty()) {
             throw new DataNotFoundException("Checkout with checkoutId " + checkoutId + " does not exist.");
@@ -134,12 +134,12 @@ public class CheckoutService {
         }
 
         // Finding entry in Checkout table matching userId and bookId
-        Checkout checkout = checkoutRepository.getCheckoutByUserIdAndBookId(userId, bookId);
-        if (checkout == null) {
+        Checkout checkout1 = checkoutRepository.getCheckoutByUserIdAndBookId(userId, bookId);
+        if (checkout1 == null) {
             throw new DataExistException("Checkout entry matching the userId: " + userId +
                                          " and bookId: " + bookId + " does not exist.");
-        }
+        }git 
 
-        checkoutRepository.deleteById(checkout.getId());
+        checkoutRepository.deleteById(checkout1.getId());
     }
 } // END OF CLASS

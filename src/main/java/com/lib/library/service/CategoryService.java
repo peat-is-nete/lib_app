@@ -1,41 +1,39 @@
 package com.lib.library.service;
 
+import com.lib.library.exception.CheckedBookRemovalException;
 import com.lib.library.exception.DataExistException;
 import com.lib.library.exception.DataNotFoundException;
+import com.lib.library.exception.DeleteNotEmptyCategoryException;
 import com.lib.library.model.Book;
 import com.lib.library.model.Category;
+import com.lib.library.model.Checkout;
 import com.lib.library.model.User;
 import com.lib.library.repository.BookRepository;
 import com.lib.library.repository.CategoryRepository;
+import com.lib.library.repository.CheckoutRepository;
 import com.lib.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CategoryService {
-    UserRepository userRepository;
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
+    private UserRepository userRepository;
     private CategoryRepository categoryRepository;
     private BookRepository bookRepository;
-    private UserService userService = new UserService();
+    private UserService userService;
+    private CheckoutRepository checkoutRepository;
+
+    @Autowired
+    public void setCheckoutRepository(CheckoutRepository checkoutRepository) {
+        this.checkoutRepository = checkoutRepository;
+
+    }
 
     @Autowired
     public void setCategoryRepository(CategoryRepository categoryRepository) {
@@ -45,6 +43,16 @@ public class CategoryService {
     @Autowired
     public void setBookRepository(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     public List<Category> getCategories() {
@@ -76,7 +84,7 @@ public class CategoryService {
 
     public Category getCategory(Long categoryId) {
         System.out.println("service getCategory ==>");
-        User user = userService.getUserWithUserDetails(); // for authentication
+        userService.getUserWithUserDetails(); // for authentication
         Optional<Category> category = categoryRepository.findById(categoryId);
         if (!category.isPresent()) {
             throw new DataNotFoundException("category with id " + categoryId + " not found");
@@ -140,7 +148,11 @@ public class CategoryService {
 
         Optional<Category> category = categoryRepository.findById(categoryId);
 
-        if( category.isPresent() ){
+        if(category.isPresent()) {
+            // before delete check if it has books
+            if(!category.get().getBookList().isEmpty()) {
+                throw new DeleteNotEmptyCategoryException("This category contains books, can't delete it.");
+            }
             categoryRepository.deleteById(categoryId);
             return "Category with Id: " + categoryId + " was successfully deleted.";
         } else {
@@ -153,7 +165,7 @@ public class CategoryService {
     public Book getCategoryBook(Long categoryId, Long bookId) {
         System.out.println("service calling getCategoryBook ==>");
 
-        User user = userService.getUserWithUserDetails();
+         userService.getUserWithUserDetails(); // for authentication
 
         Optional<Category> category = categoryRepository.findById(categoryId);
 
@@ -222,6 +234,18 @@ public class CategoryService {
         if (book.isEmpty()) {
             throw new DataNotFoundException("Book with ID: " + bookId + " does not exist.");
         }
+
+       Optional<Checkout> checkout = checkoutRepository.findById(bookId);
+        if (checkout != null) {
+            throw new CheckedBookRemovalException("Book is checked out you can't delete it.");
+
+        }
+
+////        if(book.get().getCheckout().getBook().getId() != null) {
+////            throw new CheckedBookRemovalException("Book is checked out you can't delete it.");
+//
+//        }
+//        System.out.println("book is checked out  "  + book.get().getCheckout());
 
         bookRepository.deleteById(book.get().getId());
     }
