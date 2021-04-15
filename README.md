@@ -11,13 +11,13 @@ Pete Micsunescu
 
 
 
-### Overview: 
+## Overview: 
 
 The Library API provides users a convenient way to manage inventory on books and track checkouts based on particular user roles. The Library API features various endpoints with numerous functions, such as viewing inventory and checking books out, that are critical in any library setting; _refer to ‘API Endpoints’ below for full details on endpoints_. Because all of the transactions in the Library API is persistently stored using a database, there is no need to worry about data-loss, corruption, or running out of storage space! The Library API is a simple, yet powerful tool that can act as the foundation for any professional library institution.
 
 
 
-### User Stories
+## User Stories
 
 - As an 'admin' user of a library…
   - I want to add, update, delete from, and see the catalog.
@@ -31,7 +31,7 @@ The Library API provides users a convenient way to manage inventory on books and
 
 
 
- ### Entity Relationship Diagram (ERD):
+## Entity Relationship Diagram (ERD):
 
 The ERD below demonstrates how the many entities of the Library API relate to each other. This is an overview of the API’s business process logic. Notice the crow’s foot notation specifying the multiplicity relationships between the entities. 
 
@@ -50,7 +50,30 @@ There are four relationships:
 
 
 
-### Technologies Leveraged:
+## API Endpoints:
+
+Request Header Information:
+- [OPEN] : 
+  - No Authorization Header :
+
+- [NON-AD] : 
+  - Authorization Bearer {NON-ADMIN TOKEN} :
+
+- [ADMIN] :
+  - Authorization Bearer {ADMIN TOKEN} :
+
+
+|  # | REQ. TYPE |          URL          |  REQ. BODY                                                                       | REQ. HEADER |
+| -- | --------- | --------------------- | -------------------------------------------------------------------------------- | ----------- |
+| 01 | POST      | /auth/users/register  | { "emailAddress": "a", "password": "b", "roleType": 0 or 1 (non-admin or admin)  | [OPEN]      |                       
+| 02 | POST      | /auth/users/login     | { "email": "a", "password": "b" }                                                | [OPEN]      |
+| 03 | POST      | /auth/users/login     | { "email": "a", "password": "b" }                                                | [OPEN]      |
+
+
+
+
+
+## Technologies Leveraged:
 
 |     Tech. Name     |            Utilization in Project            |
 | ------------------ | -------------------------------------------- |
