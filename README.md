@@ -17,6 +17,39 @@ The Library API provides users a convenient way to manage inventory on books and
 
 
 
+### User Stories
+
+- As an 'admin' user of a library…
+  - I want to add, update, delete from, and see the catalog.
+  - I want to organize books by categories.
+  - I want to checkout, renew, and return a book for a user.
+  - I want to see what books a user has borrowed.
+  
+- As a 'non-admin' user of a library…
+  - I want to see the catalog.
+  - I want to see which books I have checked out.
+
+
+
+ ### Entity Relationship Diagram (ERD):
+
+The ERD below demonstrates how the many entities of the Library API relate to each other. This is an overview of the API’s business process logic. Notice the crow’s foot notation specifying the multiplicity relationships between the entities. 
+
+There are four relationships:
+* One-to-One between User and Role.
+  * A user’s role can be either ‘non-admin’ or ‘admin’.
+* One-to-One between Book and Checkout.
+  * A single particular book can only be taken-out once.
+* One-to-Many between User and Checkout.
+  * A user can take-out many books.
+* One-to-Many between Category and Book.
+  * A category can contain many books.
+
+
+![Project 2 - Libraryapp ERD](https://user-images.githubusercontent.com/67444113/114885134-fdfbed80-9dcb-11eb-98b4-69eadf0fa474.jpg)
+
+
+
 ### Technologies Leveraged:
 
 |     Tech. Name     |            Utilization in Project            |
@@ -29,24 +62,8 @@ The Library API provides users a convenient way to manage inventory on books and
 | PostgreSQL         | Relational Database.                         |
 | Spring Boot        | API framework.                               |
 | Spring Security    | Framework providing JWT authentication.      |
- 
- 
- 
- ### Entity Relationship Diagram (ERD):
-
-The ERD below demonstrates how the many entities of the Library API relate to each other. This is an overview of the API’s business process logic. Notice the crow’s foot notation specifying the multiplicity relationships between the entities. 
-
-There are four relationships:
-* One-to-One between User and Role.
-  * A user’s role can be either ‘standard’ or ‘admin’.
-* One-to-One between Book and Checkout.
-  * A single particular book can only be taken-out once.
-* One-to-Many between User and Checkout.
-  * A user can take-out many books.
-* One-to-Many between Category and Book.
-  * A category can contain many books.
 
 
-![Project 2 - Libraryapp ERD](https://user-images.githubusercontent.com/67444113/114885134-fdfbed80-9dcb-11eb-98b4-69eadf0fa474.jpg)
+
 
 
