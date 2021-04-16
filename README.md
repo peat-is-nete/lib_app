@@ -2,6 +2,9 @@ Google Docs:
 https://docs.google.com/document/d/1MzOlVNFoowCJUvqQW7oVXHJiOmXD3sWv-W_Moi5kPmA/edit#
 
 
+![pixil-frame-0(1)](https://user-images.githubusercontent.com/67444113/115003534-8382aa80-9e6b-11eb-9f6d-8f5b242271a2.png)
+
+
 # Library API
 
 
@@ -63,20 +66,59 @@ Request Header Information:
   - Authorization Bearer {ADMIN TOKEN} :
 
 
-| No.| REQ. TYPE |          URL                 |  REQ. BODY                                                                       | REQ. HEADER |
-| -- | --------- | ---------------------------- | -------------------------------------------------------------------------------- | ----------- |
-| 01 | POST      | /auth/users/register         | { "emailAddress": "a", "password": "b", "roleType": 0 or 1 (non-admin or admin)  | [OPEN]      |                       
-| 02 | POST      | /auth/users/login            | { "email": "a", "password": "b" }                                                | [OPEN]      |
-| 03 | GET       | /api/categories              | {}                                                                               | [NON-AD]    |
-| 04 | POST      | /api/categories              | { "name":"a", "description":"b" }                                                | [ADMIN]     |
-| 05 | DELETE    | /api/categories{catId}       | {}                                                                               | [ADMIN]     |
-| 06 | GET       | /api/categories{catId}       | {}                                                                               | [NON-AD]    |
-| 07 | PUT       | /api/categories{catId}       | { "name":"a", "description":"b" }                                                | [ADMIN]     |
-| 08 | POST      | /api/categories{catId}/books | { "title":"a", "author":"b", "publisher": "c"}                                   | [ADMIN]     |
-| 09 | GET       | /api/categories{catId}/books | { "title":"a", "author":"b", "publisher": "c"}                                   | [ADMIN]     |
+| No.| REQ. TYPE |          URL                  |  REQ. BODY                                                                       | REQ. HEADER |
+| -- | --------- | ----------------------------  | -------------------------------------------------------------------------------- | ----------- |
+| 01 | POST      | /auth/users/register          | { "emailAddress": "a", "password": "b", "roleType": 0 or 1 (non-admin or admin)  | [OPEN]      |                       
+| 02 | POST      | /auth/users/login             | { "email": "a", "password": "b" }                                                | [OPEN]      |
+| 03 | GET       | /api/categories               | {}                                                                               | [NON-AD]    |
+| 04 | POST      | /api/categories               | { "name":"a", "description":"b" }                                                | [ADMIN]     |
+| 05 | DELETE    | /api/categories/{catId}       | {}                                                                               | [ADMIN]     |
+| 06 | GET       | /api/categories/{catId}       | {}                                                                               | [NON-AD]    |
+| 07 | PUT       | /api/categories/{catId}       | { "name":"a", "description":"b" }                                                | [ADMIN]     |
+| 08 | POST      | /api/categories/{catId}/books | { "title":"a", "author":"b", "publisher": "c"}                                   | [ADMIN]     |
+| 09 | GET       | /api/categories/{catId}/books | {}                                                                               | [NON-AD]    |
+| 10 | GET       | /api/categories/{catId}/books/{bookId} | {}                                                                      | [NON-AD]    |
+| 11 | PUT       | /api/categories/{catId}/books/{bookId} | { "title":"a", "author":"b", "publisher": "c"}                          | [ADMIN]     |
+| 12 | DELETE    | /api/categories/{catId}/books/{bookId} | {}                                                                      | [ADMIN]     |
+| 13 | GET       | /api/checkouts/{userId}/books          | {}                                                                      | [NON-AD]    |
+| 14 | POST      | /api/checkouts/{userId}/{bookId}       | {"checkoutDate":"YYYY-MM-DD", "dueDate":"YYYY-MM-DD", "book":{book} }   | [ADMIN]     |
+| 15 | PUT       | /api/checkouts/{checkoutId}/{userId}/{bookId} | {}                                                               | [ADMIN]     |
+| 16 | DELETE    | /api/checkouts/{userId}/{bookId}              | {}                                                               | [ADMIN]     |
 
-     
 
+### Endpoint Synopsis :
+
+**01** - This is an OPEN access endpoint allowing for the creation of users that will have access to the Library API. Notice that the JSON object passed in the request allows for a 'roleType' to be assigned to the created user based on whether the user should be a library administrator or not.
+
+**02** - This is an OPEN access portal endpoint taking a JSON object with a user's email and password as creditionals in the request. If authentication is successful, a JWT is returned in the response body based on the user's role. 
+
+**03** - This is a NON-AD access endpoint that returns all the categories in the Library database. Note, only authenticated users of the Library API database can access this endpoint.
+
+**04** - This is an ADMIN access endpoint that allows for the creation of a new category in the Library database. 
+
+**05** - This is an ADMIN access endpoint that allows for the deletion of a category based on its Category ID.
+
+**06** - This is a NON-AD access endpoint that allows for the retrieval of a category based on its Category ID.
+
+**07** - This is an ADMIN access endpoint that allows for the revision of a category based on its Category ID. It takes a JSON object in its request body.
+
+**08** - This is an ADMIN access endpoint that allows for the insertion of a new book entry based on its Category ID. It takes a JSON object in its request body.
+
+**09** - This is a NON-AD access endpoint that allows for the retrieval of all books contained in a Category ID.
+
+**10** - This is a NON-AD access endpoint that allows for the retrieval of a single book based on Category ID and Book ID.
+
+**11** - This is an ADMIN access endpoint that allows for the revision of a book entry based on Category ID and Book ID.
+
+**12** - This is an ADMIN access endpoint that allows for the deletion of a book entry based on Category ID and Book ID.
+
+**13** - This is a NON-AD access endpoint that allows for retrieval of all Checkouts based on User ID. Note, as of now, can only view Checkouts based on the User ID that is currently logged in.
+
+**14** - This is an ADMIN access endpoint that allows for the revision of a book Checkout based on Checkout ID, User ID, and Book ID. It takes a JSON object in its request body.
+
+**15** - This is an ADMIN access endpoint that allows for the renewal of a Checkout based on User ID and Book ID. Note, renewal is set to an additional 21 days from today.
+
+**16** - This is an ADMIN access endpoint that allows for the deletion of a book Checkout based on User ID and Book ID. 
 
 
 
