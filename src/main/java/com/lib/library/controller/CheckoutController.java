@@ -21,29 +21,34 @@ public class CheckoutController {
         this.checkoutService = checkoutService;
     }
 
-    @GetMapping(path = "/{userId}/books")
-    public List<Checkout> getBookList(@PathVariable Long userId) {
-        System.out.println("Calling getBookList");
+    // Get all the checkouts under a userId
+    @GetMapping(path = "/{userId}")
+    public List<Checkout> getCheckoutListByUser(@PathVariable Long userId) {
+        System.out.println("Calling getCheckoutListByUser ==>");
         return checkoutService.getCheckoutListByUser(userId);
     }
 
+    // Checkout a book to a user
     @PostMapping(path = "/{userId}/{bookId}")
     public Checkout createCheckout(@PathVariable Long userId, @PathVariable Long bookId, @RequestBody Checkout checkoutObject) {
-        System.out.println("Calling createCheckout");
+        System.out.println("Calling createCheckout ==>");
         return checkoutService.createCheckout(userId, bookId, checkoutObject);
     }
 
+    // Renew the book for a user
+    // URL structure is like this to enable mapping multiple books under one checkoutId in the future
     @PutMapping(path = "/{checkoutId}/{userId}/{bookId}")
-    public Checkout updateCheckout(@PathVariable Long checkoutId                                   ) {
-        System.out.println("Calling updateCheckout");
+    public Checkout updateCheckout(@PathVariable Long checkoutId) {
+        System.out.println("Calling updateCheckout ==>");
         return checkoutService.updateCheckout(checkoutId);
     }
 
+    // Return the book for a user
     @DeleteMapping(path = "/{userId}/{bookId}")
     public ResponseEntity<HashMap> deleteCheckout(@PathVariable(value = "userId") Long userId,
                                                   @PathVariable(value = "bookId") Long bookId) {
 
-        System.out.println("Calling deleteCheckout");
+        System.out.println("Calling deleteCheckout ==>");
         checkoutService.deleteCheckout(userId,bookId);
         HashMap responseMessage = new HashMap();
         responseMessage.put("status", "Checkout with userID : " + userId + " and bookID : " +
@@ -51,6 +56,4 @@ public class CheckoutController {
         return new ResponseEntity<HashMap>(responseMessage, HttpStatus.OK);
 
     }
-
-
 }

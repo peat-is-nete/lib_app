@@ -22,16 +22,14 @@ public class UserController {
 
     @PostMapping("/register")
     public User createUser(@RequestBody User userObject) {
-        System.out.println("Calling createUser");
-        System.out.println(userObject.toString());
-
+        System.out.println("Calling createUser ==>");
         return userService.createUser(userObject);
     }
 
-    // http://localhost:PORT-NUMBER/auth/users/login
+    // http://localhost:12345/auth/users/login
     @PostMapping("/login")
     public ResponseEntity<Object> loginUser(@RequestBody LoginRequest loginRequest){
-        System.out.println("Calling loginUser");
+        System.out.println("Calling loginUser ==>");
         return userService.loginUser(loginRequest);
     }
 }

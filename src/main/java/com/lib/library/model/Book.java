@@ -28,7 +28,6 @@ public class Book {
     @JoinColumn(name = "checkout_id")
     private Checkout checkout;
 
-
     public Book() {
     }
 

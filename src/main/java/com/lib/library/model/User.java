@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -27,19 +28,20 @@ public class User {
     @Column(unique = true)
     private String emailAddress;
 
-    // just for java purpose, to set user role from post request
+    // Just for Java purpose, to set user role from post request
+    // It won't create a column in the table
     @Transient
     private int roleType;
 
-    //One user can only have one role
+    // One user can only have one role
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private UserRole userRole;
 
     @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private Checkout checkout;
+    @OneToMany
+    @JoinColumn(name = "checkout_id")
+    private List<Checkout> checkouts;
 
     public User() {
     }
@@ -109,14 +111,14 @@ public class User {
         this.roleType = roleType;
     }
 
-    public Checkout getCheckout() {
-        return checkout;
+    public List<Checkout> getCheckout() {
+        return checkouts;
     }
 
-    public void setCheckout(Checkout checkout) {
-        this.checkout = checkout;
+    public void setCheckout(List<Checkout> checkouts) {
+        this.checkouts = checkouts;
     }
-    
+
     @Override
     public String toString() {
         return "User{" +

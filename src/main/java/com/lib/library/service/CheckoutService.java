@@ -49,7 +49,7 @@ public class CheckoutService {
     }
 
     public List<Checkout> getCheckoutListByUser(Long userId)  {
-        System.out.println("Service calling getBookList");
+        System.out.println("Calling getBookList");
         List<Checkout> checkouts = checkoutRepository.findByUserId(userId);
         if(checkouts == null || checkouts.isEmpty()) {
             throw new DataNotFoundException("Checkouts for user "  + userId + " do not exist");
@@ -64,11 +64,12 @@ public class CheckoutService {
             throw new AccessDeniedException("Sorry, you are not authorized to update a checkout as you are not admin.");
         }
 
-        Checkout checkout = checkoutRepository.getCheckoutByUserIdAndBookId(user.getId(), bookId);
+        Checkout checkout = checkoutRepository.getCheckoutByUserIdAndBookId(userId, bookId);
         if (checkout != null) {
-            throw new DataExistException("Checkout with userID " + user.getId() + " already has "  + checkout.getBook().getTitle()  + " book.");
+            throw new DataExistException("Checkout with userID " + userId + " already has "
+                    + checkout.getBook().getTitle()  + " book.");
         }
-        List<Checkout> checkoutList = checkoutRepository.getAllCheckoutsByUserId(user.getId());
+        List<Checkout> checkoutList = checkoutRepository.getAllCheckoutsByUserId(userId);
         if(checkoutList.size() >= CHECKOUT_LIMIT){
             throw new CheckoutLimitReachException("Checkout Limit of " + checkoutList.size() + " has been reached.");
         }
@@ -84,12 +85,8 @@ public class CheckoutService {
             throw new DataNotFoundException("User with userId " + userId + "not found");
         }
 
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, RENEWAL_DAYS);
-        Date dueDate = c.getTime();
-
         checkoutObject.setCheckoutDate(new Date());
-        checkoutObject.setDueDate(dueDate);
+        checkoutObject.setDueDate(getNewDueDate());
         checkoutObject.setBook(book.get());
         checkoutObject.setUser(borrowingUser.get());
         return checkoutRepository.save(checkoutObject);
@@ -108,16 +105,13 @@ public class CheckoutService {
             throw new DataNotFoundException("Checkout with checkoutId " + checkoutId + " does not exist.");
         }
 
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, RENEWAL_DAYS);
-        Date dueDate = c.getTime();
-        checkout.get().setDueDate(dueDate);
+        checkout.get().setDueDate(getNewDueDate());
 
         return checkoutRepository.save(checkout.get());
     }
 
     public void deleteCheckout(Long userId, Long bookId) {
-        System.out.println("Service calling deleteCheckout ==>");
+        System.out.println("Calling deleteCheckout ==>");
 
         // Getting user access rights from JWT
         User user = userService.getUserWithUserDetails();
@@ -136,10 +130,16 @@ public class CheckoutService {
         // Finding entry in Checkout table matching userId and bookId
         Checkout checkout1 = checkoutRepository.getCheckoutByUserIdAndBookId(userId, bookId);
         if (checkout1 == null) {
-            throw new DataExistException("Checkout entry matching the userId: " + userId +
+            throw new DataNotFoundException("Checkout entry matching the userId: " + userId +
                                          " and bookId: " + bookId + " does not exist.");
-        }git 
+        }
 
         checkoutRepository.deleteById(checkout1.getId());
+    }
+
+    private Date getNewDueDate() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, RENEWAL_DAYS);
+        return c.getTime();
     }
 } // END OF CLASS

@@ -12,6 +12,7 @@ import com.lib.library.security.JwtUtils;
 import com.lib.library.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,6 +48,7 @@ public class UserService {
     public void setUserRoleRepository(UserRoleRepository userRoleRepository) {
         this.userRoleRepository = userRoleRepository;
     }
+
     // * * * Auxiliary Methods * * *
     public boolean isAdmin(User user) {
         return user.getUserRole().getType() == 1;
@@ -73,7 +75,7 @@ public class UserService {
     }
 
     public ResponseEntity<Object> loginUser(LoginRequest loginRequest){
-        System.out.println("service calling login");
+        System.out.println("Calling login");
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
                     loginRequest.getPassword()));
@@ -81,7 +83,7 @@ public class UserService {
             final String JWT = jwtUtils.generateToken(userDetails);
             return ResponseEntity.ok(new LoginResponse(JWT));
         } catch (NullPointerException e) {
-            throw new DataNotFoundException("User with this emailAddress " + " not found");
+            throw new DataNotFoundException("User with this emailAddress " + loginRequest.getEmail() + " not found");
         }
     }
 

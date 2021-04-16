@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class CheckoutLimitReachException extends RuntimeException {
+
     public CheckoutLimitReachException(String message) {
         super (message);
     }

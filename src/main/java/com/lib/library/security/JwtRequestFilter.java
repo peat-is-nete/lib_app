@@ -22,6 +22,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
 
+    /* When any api will be called this method will be called first and this will extract
+     Token from header pass to JWT Util calls for token details extraction  */
+
+    @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                      HttpServletResponse httpServletResponse, FilterChain filterChain)
             throws ServletException, IOException {
@@ -29,11 +33,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
 
+       /* Checking if Bearer is present in Header or not because When sending api request with
+         token bearer should be present in that */
+
         if (AuthorizationHeader != null && AuthorizationHeader.startsWith("Bearer ")) {
             jwt = AuthorizationHeader.substring(7);
             username = jwtUtils.extractUsername(jwt);
         }
 
+        // Token is being passed to JwtUtil class for details extraction
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(username);
             if (jwtUtils.validateToken(jwt, userDetails)) {
