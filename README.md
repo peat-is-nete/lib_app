@@ -23,13 +23,14 @@ The Library API provides users a convenient way to manage inventory on books and
 ## User Stories
 
 - As an 'admin' user of a library…
-  - I want to add, update, delete from, and see the catalog.
+  - I want to add, update, delete, view Categories, Books, and Checkouts.
   - I want to organize books by categories.
   - I want to checkout, renew, and return a book for a user.
   - I want to see what books a user has borrowed.
+  - I want to get a clear error message if any operation fails.
   
 - As a 'non-admin' user of a library…
-  - I want to see the catalog.
+  - I want to see the  view Categories and Books.
   - I want to see which books I have checked out.
 
 
@@ -122,7 +123,64 @@ Request Header Information:
 
 
 
-## Technologies Leveraged:
+## Challenges Faced :
+
+Figuring out the mappings between our models was challenging at the beginning, but became much easier once we made the ERDs.
+
+The Checkout part of the API was challenging at first, since it involved more complicated business logic than the other APIs. To figure out the business logic, we thought about the specific user stories from the perspective of a library administrator before creating the endpoints. Centering on user stories before thinking about the endpoint structure or the specific conditions required in the code helped us work out the business logic.
+
+
+
+## Future Plans :
+
+* We would like to take userRole from the JWT token instead of checking from user retrieved from JWT token.
+* Provide an endpoint for whether a book is borrowed or available.
+* Provide an endpoint where we can checkout multiple books for a user under one checkoutId instead of different checkoutId.
+* JUNIT testing for endpoints.
+* Give the facility to the user to change/Reset password.
+* Add a new table and entity model to store values which are static but may have different values in the future (such as checkout limit, renew days).
+* Add a limit to renew the checkouts, one book should not be renewed more than 2 times.
+
+
+
+## What Would You Do Differently?
+
+* If we had more time, it would be useful to study some online catalog or library systems to see if there are features that we are missing in our current API.
+* Send notifications before due date.
+
+
+
+## What Are You Most Proud Of?
+
+It was a fun challenge to apply everything we learned in the previous week about REST APIs and the SpringBoot Framework. Also, the addition of new entities and relationships to cater our particular business context was pretty exciting. Lastly, and most importantly, the team dynamic was something we both found most rewarding.
+
+
+
+## How Did You Plan Your Project?
+
+* Slack
+* Google Docs
+* ERD collaboration through www.app.diagrams.net
+* Zoom meeting 
+* GitHub
+* Google Keep for notes & checklist collaboration
+
+
+
+## What did you learn?
+
+* Project Structuring using MVC. 
+* GitHub branching and merging pull requests.
+* Creating a CRUD API using the SpringBoot Framework.
+* When and How to use the different annotations in SpringBoot.
+* Many-to-Many, Many-to-One, & One-to-One entity relationships.
+* Understanding API endpoints and server requests and responses.
+* Much, much more.
+
+
+
+
+## Technologies Leveraged :
 
 |     Tech. Name     |            Utilization in Project            |
 | ------------------ | -------------------------------------------- |
@@ -134,6 +192,20 @@ Request Header Information:
 | PostgreSQL         | Relational Database.                         |
 | Spring Boot        | API framework.                               |
 | Spring Security    | Framework providing JWT authentication.      |
+
+
+
+## Maven Dependencies :
+
+Maven automatically finds and downloads the dependencies we need by the ‘groupId’ and ‘artifactId’ in the Maven central repository. Then, Maven introduces them into our project, and stores the downloaded dependencies in our project's classpath. The dependencies needed for this project can be found in the pom.xml file.
+
+As included in the pom file, this project uses:
+
+* Spring Boot Framework
+* Spring Boot JPA Framework
+* PostgreSQL
+* Spring Boot Security
+
 
 
 
