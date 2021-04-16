@@ -1,6 +1,3 @@
-Google Docs:
-https://docs.google.com/document/d/1MzOlVNFoowCJUvqQW7oVXHJiOmXD3sWv-W_Moi5kPmA/edit#
-
 
 ![pixil-frame-0(1)](https://user-images.githubusercontent.com/67444113/115003534-8382aa80-9e6b-11eb-9f6d-8f5b242271a2.png)
 
