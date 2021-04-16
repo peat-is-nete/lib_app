@@ -17,16 +17,15 @@ public class Checkout {
     @Column
     private Date dueDate;
 
-    // book ids belong to one user
+    // many checkout ids can belong to one user
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
-    // one book has one checkout
+    // one book can be borrowed once at a time
     @OneToOne
     @JoinColumn(name = "book_id")
-    @JsonIgnore
     private Book book;
 
     public Checkout() {

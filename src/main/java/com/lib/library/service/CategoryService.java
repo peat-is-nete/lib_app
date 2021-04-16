@@ -11,19 +11,15 @@ import com.lib.library.model.User;
 import com.lib.library.repository.BookRepository;
 import com.lib.library.repository.CategoryRepository;
 import com.lib.library.repository.CheckoutRepository;
-import com.lib.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CategoryService {
-    private UserRepository userRepository;
     private CategoryRepository categoryRepository;
     private BookRepository bookRepository;
     private UserService userService;
@@ -32,7 +28,6 @@ public class CategoryService {
     @Autowired
     public void setCheckoutRepository(CheckoutRepository checkoutRepository) {
         this.checkoutRepository = checkoutRepository;
-
     }
 
     @Autowired
@@ -46,17 +41,12 @@ public class CategoryService {
     }
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
     public List<Category> getCategories() {
-        System.out.println("Getting categories list ");
+        System.out.println("Getting categories list ==> ");
         userService.getUserWithUserDetails(); // for authentication
         List<Category> categories = categoryRepository.findAll();
         if (categories.isEmpty()) {
@@ -66,8 +56,8 @@ public class CategoryService {
         return categories;
     }
 
-    public Category createCategory(@RequestBody Category categoryObject) {
-        System.out.println("calling createCategory ==>");
+    public Category createCategory(Category categoryObject) {
+        System.out.println("Calling createCategory ==>");
         User user = userService.getUserWithUserDetails();
 
         if (!userService.isAdmin(user)) {
@@ -76,33 +66,34 @@ public class CategoryService {
 
         Category category = categoryRepository.findByName(categoryObject.getName());
         if (category != null) {
-            throw new DataExistException(" Category with name" + category.getName() + "already exist");
+            throw new DataExistException("Category with name" + category.getName() + "already exist");
         } else {
             return categoryRepository.save(categoryObject);
         }
     }
 
     public Category getCategory(Long categoryId) {
-        System.out.println("service getCategory ==>");
+        System.out.println("Calling getCategory ==>");
         userService.getUserWithUserDetails(); // for authentication
         Optional<Category> category = categoryRepository.findById(categoryId);
         if (!category.isPresent()) {
-            throw new DataNotFoundException("category with id " + categoryId + " not found");
+            throw new DataNotFoundException("Category with id " + categoryId + " not found");
         } else {
             return category.get();
         }
     }
 
-    public Category updateCategory(Long categoryId, @RequestBody Category categoryObject) {
-        System.out.println("Service calling updateCategory ==>");
+    public Category updateCategory(Long categoryId, Category categoryObject) {
+        System.out.println("Calling updateCategory ==>");
         User user = userService.getUserWithUserDetails();
 
         if (!userService.isAdmin(user)) {
-            throw new AccessDeniedException("Sorry, you are not authorized to create a category as you are not admin.");
+            throw new AccessDeniedException("Sorry, you are not authorized to update a category as you are not admin.");
         }
+
         Optional<Category> category = categoryRepository.findById(categoryId);
         if (!category.isPresent()) {
-            throw new DataNotFoundException("category with id " + categoryId + " not found");
+            throw new DataNotFoundException("Category with id " + categoryId + " not found");
         } else {
             category.get().setDescription(categoryObject.getDescription());
             category.get().setName(categoryObject.getName());
@@ -111,16 +102,16 @@ public class CategoryService {
     }
 
     public Book createCategoryBook(Long categoryId, Book bookObject) {
-        System.out.println("calling createCategory book ");
-        User user  = userService.getUserWithUserDetails();
+        System.out.println("Calling createCategory book ==>");
+        User user = userService.getUserWithUserDetails();
 
         if (!userService.isAdmin(user)) {
-            throw new AccessDeniedException("Sorry, you are not authorized to create a category as you are not admin.");
+            throw new AccessDeniedException("Sorry, you are not authorized to add a book as you are not admin.");
         }
 
         Optional<Category> category = categoryRepository.findById(categoryId);
         if (!category.isPresent()) {
-            throw new DataNotFoundException("category with id " + categoryId + " not found");
+            throw new DataNotFoundException("Category with id " + categoryId + " not found");
         } else {
             bookObject.setCategory(category.get());
             return bookRepository.save(bookObject);
@@ -128,17 +119,17 @@ public class CategoryService {
     }
 
     public List<Book> getCategoryBooks(Long categoryId) {
-        System.out.println("service calling getCategoryBooks ==>");
-        User user = userService.getUserWithUserDetails();// for authentication
+        System.out.println("Calling getCategoryBooks ==>");
+        userService.getUserWithUserDetails();// for authentication
         Optional<Category> category = categoryRepository.findById(categoryId);
         if (!category.isPresent()) {
-            throw new DataNotFoundException("category with id " + categoryId + " not found");
+            throw new DataNotFoundException("Category with id " + categoryId + " not found");
         }
         return  category.get().getBookList();
     }
 
     public String deleteCategoryById(Long categoryId){
-        System.out.println("service calling deleteCategoryById ==>");
+        System.out.println("Calling deleteCategoryById ==>");
 
         User user = userService.getUserWithUserDetails();
 
@@ -149,7 +140,7 @@ public class CategoryService {
         Optional<Category> category = categoryRepository.findById(categoryId);
 
         if(category.isPresent()) {
-            // before delete check if it has books
+            // Before deleting a category check if it has books
             if(!category.get().getBookList().isEmpty()) {
                 throw new DeleteNotEmptyCategoryException("This category contains books, can't delete it.");
             }
@@ -163,7 +154,7 @@ public class CategoryService {
     }
 
     public Book getCategoryBook(Long categoryId, Long bookId) {
-        System.out.println("service calling getCategoryBook ==>");
+        System.out.println("Calling getCategoryBook ==>");
 
          userService.getUserWithUserDetails(); // for authentication
 
@@ -185,7 +176,7 @@ public class CategoryService {
     public Book updateByCategoryIdAndBookId(Long categoryId,
                                             Long bookId,
                                             Book bookObj) {
-        System.out.println("service calling updateByCategoryIdAndBookId ==>");
+        System.out.println("Calling updateByCategoryIdAndBookId ==>");
 
         User user = userService.getUserWithUserDetails();
 
@@ -214,7 +205,7 @@ public class CategoryService {
     }
 
     public void deleteByCategoryIdAndBookId(Long categoryId, Long bookId) {
-        System.out.println("service calling deleteByCategoryIdAndBookId ==>");
+        System.out.println("Calling deleteByCategoryIdAndBookId ==>");
 
         User user = userService.getUserWithUserDetails();
 
@@ -235,17 +226,12 @@ public class CategoryService {
             throw new DataNotFoundException("Book with ID: " + bookId + " does not exist.");
         }
 
+        // Before deleting a book check if it is checked out
        Optional<Checkout> checkout = checkoutRepository.findById(bookId);
         if (checkout != null) {
             throw new CheckedBookRemovalException("Book is checked out you can't delete it.");
 
         }
-
-////        if(book.get().getCheckout().getBook().getId() != null) {
-////            throw new CheckedBookRemovalException("Book is checked out you can't delete it.");
-//
-//        }
-//        System.out.println("book is checked out  "  + book.get().getCheckout());
 
         bookRepository.deleteById(book.get().getId());
     }
