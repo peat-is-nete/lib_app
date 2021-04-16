@@ -63,12 +63,19 @@ Request Header Information:
   - Authorization Bearer {ADMIN TOKEN} :
 
 
-|  # | REQ. TYPE |          URL          |  REQ. BODY                                                                       | REQ. HEADER |
-| -- | --------- | --------------------- | -------------------------------------------------------------------------------- | ----------- |
-| 01 | POST      | /auth/users/register  | { "emailAddress": "a", "password": "b", "roleType": 0 or 1 (non-admin or admin)  | [OPEN]      |                       
-| 02 | POST      | /auth/users/login     | { "email": "a", "password": "b" }                                                | [OPEN]      |
-| 03 | POST      | /auth/users/login     | { "email": "a", "password": "b" }                                                | [OPEN]      |
+| No.| REQ. TYPE |          URL                 |  REQ. BODY                                                                       | REQ. HEADER |
+| -- | --------- | ---------------------------- | -------------------------------------------------------------------------------- | ----------- |
+| 01 | POST      | /auth/users/register         | { "emailAddress": "a", "password": "b", "roleType": 0 or 1 (non-admin or admin)  | [OPEN]      |                       
+| 02 | POST      | /auth/users/login            | { "email": "a", "password": "b" }                                                | [OPEN]      |
+| 03 | GET       | /api/categories              | {}                                                                               | [NON-AD]    |
+| 04 | POST      | /api/categories              | { "name":"a", "description":"b" }                                                | [ADMIN]     |
+| 05 | DELETE    | /api/categories{catId}       | {}                                                                               | [ADMIN]     |
+| 06 | GET       | /api/categories{catId}       | {}                                                                               | [NON-AD]    |
+| 07 | PUT       | /api/categories{catId}       | { "name":"a", "description":"b" }                                                | [ADMIN]     |
+| 08 | POST      | /api/categories{catId}/books | { "title":"a", "author":"b", "publisher": "c"}                                   | [ADMIN]     |
+| 09 | GET       | /api/categories{catId}/books | { "title":"a", "author":"b", "publisher": "c"}                                   | [ADMIN]     |
 
+     
 
 
 
