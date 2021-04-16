@@ -80,7 +80,7 @@ Request Header Information:
 | 10 | GET       | /api/categories/{catId}/books/{bookId} | {}                                                                      | [NON-AD]    |
 | 11 | PUT       | /api/categories/{catId}/books/{bookId} | { "title":"a", "author":"b", "publisher": "c"}                          | [ADMIN]     |
 | 12 | DELETE    | /api/categories/{catId}/books/{bookId} | {}                                                                      | [ADMIN]     |
-| 13 | GET       | /api/checkouts/{userId}/books          | {}                                                                      | [NON-AD]    |
+| 13 | GET       | /api/checkouts/{userId}                | {}                                                                      | [NON-AD]    |
 | 14 | POST      | /api/checkouts/{userId}/{bookId}       | {"checkoutDate":"YYYY-MM-DD", "dueDate":"YYYY-MM-DD", "book":{book} }   | [ADMIN]     |
 | 15 | PUT       | /api/checkouts/{checkoutId}/{userId}/{bookId} | {}                                                               | [ADMIN]     |
 | 16 | DELETE    | /api/checkouts/{userId}/{bookId}              | {}                                                               | [ADMIN]     |
