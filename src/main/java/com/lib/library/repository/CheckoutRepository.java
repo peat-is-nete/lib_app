@@ -12,5 +12,5 @@ public interface CheckoutRepository extends JpaRepository<Checkout, Long> {
     List<Checkout> findByUserId(Long userId);
     Checkout getCheckoutByUserIdAndBookId(Long userID, Long bookId);
     List<Checkout> getAllCheckoutsByUserId(Long checkoutId);
-    Optional<Checkout> findByBookId(Long bookId);
+    Checkout getCheckoutByBookId(Long bookId);
 }

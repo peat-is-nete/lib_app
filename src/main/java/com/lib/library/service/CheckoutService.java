@@ -69,6 +69,12 @@ public class CheckoutService {
             throw new DataExistException("Checkout with userID " + userId + " already has "
                     + checkout.getBook().getTitle()  + " book.");
         }
+
+        Checkout bookCheckout = checkoutRepository.getCheckoutByBookId(bookId);
+        if (bookCheckout != null) {
+            throw new DataExistException("Checkout with bookId " + bookId + " already exists.");
+        }
+
         List<Checkout> checkoutList = checkoutRepository.getAllCheckoutsByUserId(userId);
         if(checkoutList.size() >= CHECKOUT_LIMIT){
             throw new CheckoutLimitReachException("Checkout Limit of " + checkoutList.size() + " has been reached.");
