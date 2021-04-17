@@ -207,6 +207,11 @@ As included in the pom file, this project uses:
 * Spring Boot Security
 
 
+## Installation Notes :
+
+Because there currently isn't an endpoint for the creation of user roles, they must be inserted into the database into the 'userrole' table. This must be done before the creation of any library database users. Refer to image below.
+
+![Screen Shot 2021-04-16 at 11 05 00 PM](https://user-images.githubusercontent.com/67444113/115101317-a616d100-9f08-11eb-9241-5f532d58c4e8.png)
 
 
 
