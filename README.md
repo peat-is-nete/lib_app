@@ -1,6 +1,3 @@
-Google Docs:
-https://docs.google.com/document/d/1MzOlVNFoowCJUvqQW7oVXHJiOmXD3sWv-W_Moi5kPmA/edit#
-
 
 ![pixil-frame-0(1)](https://user-images.githubusercontent.com/67444113/115003534-8382aa80-9e6b-11eb-9f6d-8f5b242271a2.png)
 
@@ -16,21 +13,21 @@ Pete Micsunescu
 
 ## Overview: 
 
-The Library API provides users a convenient way to manage inventory on books and track checkouts based on particular user roles. The Library API features various endpoints with numerous functions, such as viewing inventory and checking books out, that are critical in any library setting; _refer to ‘API Endpoints’ below for full details on endpoints_. Because all of the transactions in the Library API is persistently stored using a database, there is no need to worry about data-loss, corruption, or running out of storage space! The Library API is a simple, yet powerful tool that can act as the foundation for any professional library institution.
+The Library API provides users a convenient way to manage inventory on books and track checkouts based on particular user roles. The Library API features various endpoints with numerous functions, such as viewing inventory and checking out a book, that are critical in any library setting; _refer to ‘API Endpoints’ below for full details on endpoints_. Because all of the transactions in the Library API is persistently stored using a database, there is no need to worry about data-loss, corruption, or running out of storage space! The Library API is a simple, yet powerful tool that can act as the foundation for any professional library institution.
 
 
 
 ## User Stories
 
 - As an 'admin' user of a library…
-  - I want to add, update, delete, view Categories, Books, and Checkouts.
+  - I want to add, update, delete, and view all Categories, Books, and Checkouts.
   - I want to organize books by categories.
   - I want to checkout, renew, and return a book for a user.
   - I want to see what books a user has borrowed.
   - I want to get a clear error message if any operation fails.
   
 - As a 'non-admin' user of a library…
-  - I want to see the  view Categories and Books.
+  - I want to see all the Categories and Books the library has to offer.
   - I want to see which books I have checked out.
 
 
@@ -129,6 +126,9 @@ Figuring out the mappings between our models was challenging at the beginning, b
 
 The Checkout part of the API was challenging at first, since it involved more complicated business logic than the other APIs. To figure out the business logic, we thought about the specific user stories from the perspective of a library administrator before creating the endpoints. Centering on user stories before thinking about the endpoint structure or the specific conditions required in the code helped us work out the business logic.
 
+![Code Screen Shot 1](https://user-images.githubusercontent.com/67444113/115064575-b4d29900-9eb2-11eb-905d-2a7684037c29.png)
+
+
 
 
 ## Future Plans :
@@ -143,36 +143,36 @@ The Checkout part of the API was challenging at first, since it involved more co
 
 
 
-## What Would You Do Differently?
+## What Would We Do Differently?
 
-* If we had more time, it would be useful to study some online catalog or library systems to see if there are features that we are missing in our current API.
-* Send notifications before due date.
+* If we had more time, it would be useful to study some established and proven online catalog or library systems to see if there are any features that we are missing and would want to add to our current API.
+* Send notifications before due date via text, email, or other.
 
 
 
-## What Are You Most Proud Of?
+## What Are We Most Proud Of?
 
 It was a fun challenge to apply everything we learned in the previous week about REST APIs and the SpringBoot Framework. Also, the addition of new entities and relationships to cater our particular business context was pretty exciting. Lastly, and most importantly, the team dynamic was something we both found most rewarding.
 
 
 
-## How Did You Plan Your Project?
+## How Did We Plan Our Project?
 
 * Slack
 * Google Docs
-* ERD collaboration through www.app.diagrams.net
+* www.app.diagrams.net for online ERD design collaboration. 
 * Zoom meeting 
 * GitHub
-* Google Keep for notes & checklist collaboration
+* Google Keep for online notes & checklist collaboration.
 
 
 
-## What did you learn?
+## What Did We Learn?
 
-* Project Structuring using MVC. 
+* Project structuring using MVC model. 
 * GitHub branching and merging pull requests.
 * Creating a CRUD API using the SpringBoot Framework.
-* When and How to use the different annotations in SpringBoot.
+* When and how to use many different annotations found in SpringBoot.
 * Many-to-Many, Many-to-One, & One-to-One entity relationships.
 * Understanding API endpoints and server requests and responses.
 * Much, much more.
@@ -205,6 +205,7 @@ As included in the pom file, this project uses:
 * Spring Boot JPA Framework
 * PostgreSQL
 * Spring Boot Security
+
 
 
 
